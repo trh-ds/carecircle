@@ -1,0 +1,1 @@
+ Shared types, configs, schemas. Empty on day one (YAGNI). Extract here only when you have actual duplication across services.

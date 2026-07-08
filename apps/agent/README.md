@@ -1,0 +1,1 @@
+Python FastAPI + LangGraph service. All agents (Document Intelligence, Adherence, Digest, Coordination), tool registries, RAG pipeline, background workers, and provider abstraction layer. Stateless — scales via workers.

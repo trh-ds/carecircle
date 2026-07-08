@@ -1,0 +1,1 @@
+Docker Compose, nginx, Terraform, deployment scripts, and environment configs. One docker-compose up spins up the entire local stack.

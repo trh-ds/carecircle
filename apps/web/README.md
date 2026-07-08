@@ -1,0 +1,1 @@
+Next.js frontend + BFF. Dashboard, check-in UI, task board, document uploader, API routes, auth, and real-time client. Never talks to LLMs directly.
