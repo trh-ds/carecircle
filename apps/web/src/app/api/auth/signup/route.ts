@@ -1,7 +1,8 @@
-import db from '@/lib/db' // must export a mysql2/promise pool
+import db from '@/lib/db'
 import { hashPassword } from '@/lib/password'
 import { signToken } from '@/lib/JWT'
 import { NextResponse } from 'next/server'
+import crypto from 'crypto'
 
 export async function POST(req: Request) {
   const { email, password, phone, full_name, preferred_language } = await req.json()
@@ -16,15 +17,22 @@ export async function POST(req: Request) {
   }
 
   const hashed = await hashPassword(password)
+  const userId = crypto.randomUUID()
 
-  const [result] = await db.execute(
-    `INSERT INTO users (email, phone, full_name, preferred_language, metadata, password_hash)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [email, phone, full_name, preferred_language, null, hashed]
-  )
+  try {
+    await db.execute(
+      `INSERT INTO users (id, email, phone, full_name, preferred_language, metadata, password_hash, last_login_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+      [userId, email, phone, full_name, preferred_language, JSON_OBJECT(), hashed]
+    )
+  } catch (err: any) {
+    if (err.errno === 1062) {
+      return NextResponse.json({ error: 'User already exists' }, { status: 400 })
+    }
+    throw err 
+  }
 
-  const insertedId = (result as any).insertId
-  const user = { id: insertedId, email }
+  const user = { id: userId, email }
 
   const token = signToken({ userId: user.id, email: user.email })
 
@@ -38,7 +46,7 @@ export async function POST(req: Request) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
-    maxAge: 60 * 60 * 24 * 7, 
+    maxAge: 60 * 60 * 24 * 7,
   })
 
   return response
