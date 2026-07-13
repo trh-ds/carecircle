@@ -22,19 +22,19 @@ export async function POST(req: Request) {
   try {
     await db.execute(
       `INSERT INTO users (id, email, phone, full_name, preferred_language, metadata, password_hash, last_login_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
-      [userId, email, phone, full_name, preferred_language, JSON_OBJECT(), hashed]
+       VALUES (?, ?, ?, ?, ?, JSON_OBJECT(), ?, NOW())`,
+      [userId, email, phone, full_name, preferred_language, hashed]
     )
   } catch (err: any) {
     if (err.errno === 1062) {
       return NextResponse.json({ error: 'User already exists' }, { status: 400 })
     }
-    throw err 
+    throw err
   }
 
   const user = { id: userId, email }
-
-  const token = signToken({ userId: user.id, email: user.email })
+  const jti = crypto.randomUUID()
+  const token = signToken({ userId: user.id, email: user.email, jti })
 
   const response = NextResponse.json(
     { user: { id: user.id, email: user.email } },

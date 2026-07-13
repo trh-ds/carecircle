@@ -7,20 +7,23 @@ export async function POST(req: Request) {
     const { email, password } = await req.json()
 
     if (!email || !password) {
-        return NextResponse.json({ error: "Missing email or password" }, { status: 400 })
+        return NextResponse.json({ error: 'Missing email or password' }, { status: 400 })
     }
 
-    const [rows] = await db.execute('SELECT id, email,password_hash FROM users WHERE email = ? AND deleted_at IS NULL', [email])
+    const [rows] = await db.execute(
+        'SELECT id, email, password_hash FROM users WHERE email = ? AND deleted_at IS NULL',
+        [email]
+    )
+
+    // Guard + cast: this fixes the TypeScript error
     if (!Array.isArray(rows) || rows.length === 0) {
-        return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
+        return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
     }
-
-    const user = rows[0]
+    const user = (rows as any[])[0]
 
     const isValid = await verifyPassword(password, user.password_hash)
-
     if (!isValid) {
-        return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
+        return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
     }
 
     await db.execute('UPDATE users SET last_login_at = NOW() WHERE id = ?', [user.id])
@@ -32,12 +35,12 @@ export async function POST(req: Request) {
         { status: 200 }
     )
 
-    response.cookies.set("session", token, {
+    response.cookies.set('session', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,   // 7 days
     })
 
     return response
