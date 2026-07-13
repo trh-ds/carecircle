@@ -7,13 +7,12 @@ export async function POST(req: NextRequest) {
 
     if (token) {
         try {
-            const decoded = verifyToken(token)    // still valid at this point
+            const decoded = verifyToken(token)    
             await db.execute(
                 'INSERT INTO token_blacklist (jti, expires_at) VALUES (?, FROM_UNIXTIME(?))',
                 [decoded.jti, decoded.exp]
             )
         } catch {
-            // token already invalid or expired – ignore
         }
     }
 
