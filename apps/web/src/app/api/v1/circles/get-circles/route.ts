@@ -9,7 +9,6 @@ export async function GET(req : Request){
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log(req)
     const [rows] = await db.execute('SELECT name from circles');
     return NextResponse.json({circles: rows}, {status: 200})
     
