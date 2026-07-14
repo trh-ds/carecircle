@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
                 [decoded.jti, decoded.exp]
             )
         } catch {
+            
         }
     }
 

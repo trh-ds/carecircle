@@ -26,10 +26,17 @@ export async function POST(req:Request){
              VALUES (?, ?, ?, ?, ?)`,
             [circleId, name, tenant_timezone, userId, createTime]
         )
+
+        await  db.execute(
+            `UPDATE TABLE users`
+        )
         return NextResponse.json({ message: 'Circle created successfully' }, { status: 201 });
     } catch (error) {
         console.error('Error creating circle:', error);
         return NextResponse.json({ error: 'Failed to create circle' }, { status: 500 });
     }
+
+
+
 
 }
