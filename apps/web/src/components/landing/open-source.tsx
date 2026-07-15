@@ -2,6 +2,15 @@
 
 import { Section, FadeUp } from './motion';
 import { ShieldIcon, GithubIcon } from './icons';
+import { CountUp } from '@/components/react-bits/count-up';
+import { StarBorder } from '@/components/react-bits/star-border';
+
+const STATS = [
+  { to: 3, label: 'AI agents', color: 'text-[#4d94ff]' },
+  { to: 7, label: 'MVP features', color: 'text-[#3dd68c]' },
+  { to: 1, label: 'docker-compose up', color: 'text-[#ff5757]' },
+  { to: 0, label: 'vendor lock-in', color: 'text-[#fafafa]' },
+] as const;
 
 export function OpenSource() {
   return (
@@ -17,16 +26,30 @@ export function OpenSource() {
           No vendor lock-in. No one else&apos;s server sees your family&apos;s data.
           Run it on your own hardware, or deploy to a $5 VPS. MIT licensed.
         </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <a
+
+        {/* Stats with CountUp */}
+        <div className="mx-auto mt-12 grid max-w-2xl grid-cols-2 gap-8 sm:grid-cols-4">
+          {STATS.map((s) => (
+            <div key={s.label}>
+              <div className={`font-[family-name:var(--font-display)] text-4xl font-semibold ${s.color}`}>
+                <CountUp to={s.to} duration={1.5} />
+              </div>
+              <div className="mt-1 text-xs text-[#555]">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex items-center justify-center gap-4">
+          <StarBorder
+            as="a"
             href="https://github.com/trh-ds/carecircle"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-12 items-center gap-2 rounded-xl bg-[#fafafa] px-8 text-sm font-medium text-[#050505] transition-all duration-150 hover:bg-white/90 active:scale-[0.97]"
+            color="#3dd68c"
+            speed="5s"
+            innerClassName="flex items-center gap-2 cursor-pointer hover:bg-[#111] transition-colors"
           >
             <GithubIcon />
             View on GitHub
-          </a>
+          </StarBorder>
         </div>
       </FadeUp>
     </Section>

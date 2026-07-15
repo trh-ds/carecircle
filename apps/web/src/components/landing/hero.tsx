@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { GithubIcon } from './icons';
+import { BlurText } from '@/components/react-bits/blur-text';
+import { StarBorder } from '@/components/react-bits/star-border';
 
 export function Hero() {
   return (
@@ -17,10 +19,14 @@ export function Hero() {
             <span className="text-xs text-[#888]">Open source & self-hosted</span>
           </div>
 
-          <h1 className="font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.1] tracking-[-0.02em] text-[#fafafa] sm:text-6xl lg:text-7xl">
-            Care doesn&apos;t have to fall on{' '}
-            <span className="text-[#4d94ff]">one person</span>.
-          </h1>
+          <BlurText
+            text="Care doesn't have to fall on one person."
+            delay={150}
+            animateBy="words"
+            direction="bottom"
+            stepDuration={0.4}
+            className="font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.1] tracking-[-0.02em] text-[#fafafa] sm:text-6xl lg:text-7xl [&>span:nth-child(7)]:text-[#4d94ff] [&>span:nth-child(8)]:text-[#4d94ff] [&>span:nth-child(9)]:text-[#4d94ff]"
+          />
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#888] sm:text-xl">
             An open-source platform that helps distributed families coordinate care.
@@ -35,15 +41,16 @@ export function Hero() {
             >
               See how it works
             </a>
-            <a
+            <StarBorder
+              as="a"
               href="https://github.com/trh-ds/carecircle"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/[0.08] px-8 text-sm font-medium text-[#ccc] transition-all duration-150 hover:border-white/[0.15] hover:text-[#fafafa] active:scale-[0.97]"
+              color="#4d94ff"
+              speed="5s"
+              innerClassName="flex items-center gap-2 cursor-pointer hover:bg-[#111] transition-colors"
             >
               <GithubIcon />
               Self-host it
-            </a>
+            </StarBorder>
           </div>
         </motion.div>
       </div>

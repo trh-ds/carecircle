@@ -5,6 +5,13 @@ import { Section, FadeUp } from './motion';
 import { AGENTS } from './constants';
 import { COLOR_MAP, BORDER_COLOR_MAP, GLOW_MAP } from './types';
 import { SparkleIcon } from './icons';
+import { SpotlightCard } from '@/components/react-bits/spotlight-card';
+
+const SPOTLIGHT_COLORS = {
+  'accent-blue': 'rgba(77, 148, 255, 0.08)',
+  'accent-green': 'rgba(61, 214, 140, 0.08)',
+  'accent-red': 'rgba(255, 87, 87, 0.08)',
+} as const;
 
 export function Agents() {
   return (
@@ -24,26 +31,24 @@ export function Agents() {
       <div className="grid gap-6 md:grid-cols-3">
         {AGENTS.map((a) => (
           <FadeUp key={a.title}>
-            <div
-              className={cn(
-                'group relative rounded-2xl border p-8 transition-all duration-200',
-                BORDER_COLOR_MAP[a.color],
-                'bg-white/[0.01] hover:bg-white/[0.02]',
-                GLOW_MAP[a.color],
-              )}
+            <SpotlightCard
+              spotlightColor={SPOTLIGHT_COLORS[a.color]}
+              className={cn('border', BORDER_COLOR_MAP[a.color], GLOW_MAP[a.color])}
             >
-              <div className="mb-5 flex items-center gap-3">
-                <div className={cn('flex h-10 w-10 items-center justify-center rounded-xl border bg-white/[0.02]', BORDER_COLOR_MAP[a.color], COLOR_MAP[a.color])}>
-                  <SparkleIcon />
+              <div className="bg-white/[0.01] p-8 transition-colors duration-200 hover:bg-white/[0.02]">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className={cn('flex h-10 w-10 items-center justify-center rounded-xl border bg-white/[0.02]', BORDER_COLOR_MAP[a.color], COLOR_MAP[a.color])}>
+                    <SparkleIcon />
+                  </div>
+                  <h3 className="font-[family-name:var(--font-display)] text-lg font-medium text-[#fafafa]">
+                    {a.title}
+                  </h3>
                 </div>
-                <h3 className="font-[family-name:var(--font-display)] text-lg font-medium text-[#fafafa]">
-                  {a.title}
-                </h3>
+                <p className="text-sm leading-relaxed text-[#888]">
+                  {a.desc}
+                </p>
               </div>
-              <p className="text-sm leading-relaxed text-[#888]">
-                {a.desc}
-              </p>
-            </div>
+            </SpotlightCard>
           </FadeUp>
         ))}
       </div>

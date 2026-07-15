@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn';
 import { Section, FadeUp } from './motion';
 import { FEATURES } from './constants';
 import { BORDER_COLOR_MAP } from './types';
+import { SpotlightCard } from '@/components/react-bits/spotlight-card';
 
 export function Features() {
   return (
@@ -23,20 +24,19 @@ export function Features() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f) => (
           <FadeUp key={f.label}>
-            <div
-              className={cn(
-                'rounded-xl border p-6 transition-colors duration-200',
-                BORDER_COLOR_MAP[f.color],
-                'bg-white/[0.01] hover:bg-white/[0.02]',
-              )}
+            <SpotlightCard
+              spotlightColor="rgba(77, 148, 255, 0.06)"
+              className={cn('border', BORDER_COLOR_MAP[f.color])}
             >
-              <h4 className="font-[family-name:var(--font-display)] text-base font-medium text-[#fafafa]">
-                {f.label}
-              </h4>
-              <p className="mt-2 text-sm leading-relaxed text-[#888]">
-                {f.desc}
-              </p>
-            </div>
+              <div className="bg-white/[0.01] p-6 transition-colors duration-200 hover:bg-white/[0.02]">
+                <h4 className="font-[family-name:var(--font-display)] text-base font-medium text-[#fafafa]">
+                  {f.label}
+                </h4>
+                <p className="mt-2 text-sm leading-relaxed text-[#888]">
+                  {f.desc}
+                </p>
+              </div>
+            </SpotlightCard>
           </FadeUp>
         ))}
       </div>
