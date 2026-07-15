@@ -12,7 +12,6 @@ export async function getUserName(user_id: string): Promise<string | null> {
     );
 
     if (rows.length > 0) {
-        console.log(rows[0].full_name)
         return rows[0].full_name;   
     }
 
