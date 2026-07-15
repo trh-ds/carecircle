@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 vi.mock('@/lib/db', () => ({ default: { execute: vi.fn() as any } }));
 vi.mock('@/helpers/checkAuth', () => ({ getSession: vi.fn() }));
 vi.mock('@/helpers/circleauth', () => ({
